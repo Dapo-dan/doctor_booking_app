@@ -1,4 +1,7 @@
+import 'package:doctor_booking_app/shared/widgets/avatars/circle_avatar_with_text_label.dart';
+import 'package:doctor_booking_app/shared/widgets/titles/section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:models/models.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -65,8 +68,78 @@ class HomeView extends StatelessWidget {
             )
           ],
         ),
-        // bottom: PreferredSize(preferredSize: preferredSize, child: child),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_outlined),
+          ),
+        ],
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(64.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                    hintText: 'Search for doctors...',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.onSurfaceVariant,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Icon(
+                        Icons.filter_alt_outlined,
+                        color: colorScheme.surfaceVariant,
+                      ),
+                    )),
+              ),
+            )),
+      ),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            _DoctorCategories(),
+            _MySchedule(),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class _DoctorCategories extends StatelessWidget {
+  const _DoctorCategories();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SectionTitle(
+          title: 'Categories',
+          action: 'See all',
+          onPressed: () {},
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: DoctorCategory.values
+              .take(5)
+              .map((category) => Expanded(
+                    child: CircleAvatarWithTextLabel(
+                        icon: category.icon, label: category.name),
+                  ))
+              .toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _MySchedule extends StatelessWidget {
+  const _MySchedule({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:doctor_booking_app/screens/home_screen.dart';
+import 'package:doctor_booking_app/shared/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,10 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Doctor Booking App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: const AppTheme().themeData,
       home: const HomeScreen(),
     );
   }
