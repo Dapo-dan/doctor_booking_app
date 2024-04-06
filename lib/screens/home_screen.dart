@@ -1,4 +1,5 @@
 import 'package:doctor_booking_app/shared/widgets/avatars/circle_avatar_with_text_label.dart';
+import 'package:doctor_booking_app/shared/widgets/card/appointment_preview_card.dart';
 import 'package:doctor_booking_app/shared/widgets/titles/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
@@ -100,7 +101,14 @@ class HomeView extends StatelessWidget {
         child: Column(
           children: [
             _DoctorCategories(),
+            SizedBox(
+              height: 24.0,
+            ),
             _MySchedule(),
+            SizedBox(
+              height: 24.0,
+            ),
+            _NearbyDoctors(),
           ],
         ),
       ),
@@ -136,10 +144,54 @@ class _DoctorCategories extends StatelessWidget {
 }
 
 class _MySchedule extends StatelessWidget {
-  const _MySchedule({super.key});
+  const _MySchedule();
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        SectionTitle(
+          title: 'My Schedule',
+          action: ' See all',
+          onPressed: () {},
+        ),
+        const AppointmentPreviewCard(),
+      ],
+    );
+  }
+}
+
+class _NearbyDoctors extends StatelessWidget {
+  const _NearbyDoctors({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      children: [
+        SectionTitle(
+          title: 'Nearby Doctors',
+          action: ' See all',
+          onPressed: () {},
+        ),
+        const SizedBox(
+          height: 8.0,
+        ),
+        ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          separatorBuilder: (context, index) {
+            return Divider(
+              height: 24.0,
+              color: colorScheme.surfaceVariant,
+            );
+          },
+          itemCount: Doctor.sampleDoctors.length,
+          itemBuilder: (context, index) {},
+        )
+      ],
+    );
   }
 }
