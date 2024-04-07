@@ -1,5 +1,7 @@
 import 'package:doctor_booking_app/shared/widgets/avatars/circle_avatar_with_text_label.dart';
+import 'package:doctor_booking_app/shared/widgets/bottom_nav_bars.dart/main_nav_bar.dart';
 import 'package:doctor_booking_app/shared/widgets/card/appointment_preview_card.dart';
+import 'package:doctor_booking_app/shared/widgets/list_tiles/doctor_list_tile.dart';
 import 'package:doctor_booking_app/shared/widgets/titles/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
@@ -112,6 +114,7 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const MainNavBar(),
     );
   }
 }
@@ -162,11 +165,10 @@ class _MySchedule extends StatelessWidget {
 }
 
 class _NearbyDoctors extends StatelessWidget {
-  const _NearbyDoctors({super.key});
+  const _NearbyDoctors();
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -189,7 +191,11 @@ class _NearbyDoctors extends StatelessWidget {
             );
           },
           itemCount: Doctor.sampleDoctors.length,
-          itemBuilder: (context, index) {},
+          itemBuilder: (context, index) {
+            final doctor = Doctor.sampleDoctors[index];
+
+            return DoctorListTile(doctor: doctor);
+          },
         )
       ],
     );
