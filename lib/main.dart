@@ -1,7 +1,7 @@
 import 'package:doctor_booking_app/repository/doctor_repository.dart';
 import 'package:doctor_booking_app/screens/home_screen.dart';
 import 'package:doctor_booking_app/shared/theme/app_theme.dart';
-import 'package:doctor_booking_app/state/bloc/home_bloc.dart';
+import 'package:doctor_booking_app/state/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

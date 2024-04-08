@@ -3,7 +3,7 @@ import 'package:doctor_booking_app/shared/widgets/bottom_nav_bars.dart/main_nav_
 import 'package:doctor_booking_app/shared/widgets/card/appointment_preview_card.dart';
 import 'package:doctor_booking_app/shared/widgets/list_tiles/doctor_list_tile.dart';
 import 'package:doctor_booking_app/shared/widgets/titles/section_title.dart';
-import 'package:doctor_booking_app/state/bloc/home_bloc.dart';
+import 'package:doctor_booking_app/state/home/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
