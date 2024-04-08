@@ -2,7 +2,6 @@ import 'package:models/models.dart';
 
 class DoctorRepository {
   const DoctorRepository(
-      // TODO: Inject the required dependencies
       // e.g. class to connect with the db
       );
 
@@ -12,7 +11,6 @@ class DoctorRepository {
         milliseconds: 1000,
       ),
     );
-    // TODO: get those data from DB
     return DoctorCategory.values;
   }
 

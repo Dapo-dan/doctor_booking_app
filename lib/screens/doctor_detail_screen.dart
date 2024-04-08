@@ -1,7 +1,10 @@
+import 'package:doctor_booking_app/repository/doctor_repository.dart';
 import 'package:doctor_booking_app/shared/utils/time_of_day_extension.dart';
 import 'package:doctor_booking_app/shared/widgets/buttons/app_icon_button.dart';
 import 'package:doctor_booking_app/shared/widgets/card/doctor_card.dart';
+import 'package:doctor_booking_app/state/doctor_details/doctor_details_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:models/models.dart';
 
 class DoctorDetailsScreen extends StatelessWidget {
@@ -14,8 +17,14 @@ class DoctorDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create the bloc here
-    return const DoctorDetailsView();
+    return BlocProvider(
+      create: (context) => DoctorDetailsBloc(
+        doctorRepository: context.read<DoctorRepository>(),
+      )..add(
+          LoadDoctorDetailsEvent(doctorId: doctorId),
+        ),
+      child: const DoctorDetailsView(),
+    );
   }
 }
 
@@ -27,7 +36,6 @@ class DoctorDetailsView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    // Create the UI here
     return Scaffold(
       appBar: AppBar(
         leading: AppIconButton(
@@ -45,28 +53,57 @@ class DoctorDetailsView extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DoctorCard(
-              doctor: Doctor.sampleDoctors[0],
-            ),
-            Divider(
-              height: 32.0,
-              color: colorScheme.surfaceVariant,
-            ),
-            _DocorWorkingHours()
-          ],
-        ),
+      body: BlocBuilder<DoctorDetailsBloc, DoctorDetailsState>(
+        builder: (context, state) {
+          if (state.status == DoctorDetailsStatus.initial ||
+              state.status == DoctorDetailsStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state.status == DoctorDetailsStatus.loaded) {
+            final doctor = state.doctor;
+
+            if (doctor == null) {
+              return const Center(
+                child: Text('Doctor not found'),
+              );
+            }
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DoctorCard(
+                    doctor: state.doctor!,
+                  ),
+                  Divider(
+                    height: 32.0,
+                    color: colorScheme.surfaceVariant,
+                  ),
+                  _DocorWorkingHours(
+                    workingHours: doctor.workingHours,
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text('Something went wrong'),
+            );
+          }
+        },
       ),
     );
   }
 }
 
 class _DocorWorkingHours extends StatelessWidget {
-  const _DocorWorkingHours();
+  const _DocorWorkingHours({
+    required this.workingHours,
+  });
+
+  final List<DoctorWorkingHours> workingHours;
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +129,13 @@ class _DocorWorkingHours extends StatelessWidget {
           separatorBuilder: (context, index) => const SizedBox(
             height: 8.0,
           ),
-          itemCount: Doctor.sampleDoctors[0].workingHours.length,
+          itemCount: workingHours.length,
           itemBuilder: (context, index) {
             return Row(
               children: [
                 Expanded(
                   child: Text(
-                    Doctor.sampleDoctors[0].workingHours[index].dayOfWeek,
+                    workingHours[index].dayOfWeek,
                   ),
                 ),
                 const SizedBox(
@@ -113,8 +150,7 @@ class _DocorWorkingHours extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
-                    Doctor.sampleDoctors[0].workingHours[index].startTime
-                        .toCustomString(),
+                    workingHours[index].startTime.toCustomString(),
                     style: textTheme.bodySmall!.copyWith(
                       color: colorScheme.onBackground.withOpacity(
                         0.5,
@@ -140,8 +176,7 @@ class _DocorWorkingHours extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    Doctor.sampleDoctors[0].workingHours[index].endTime
-                        .toCustomString(),
+                    workingHours[index].endTime.toCustomString(),
                     style: textTheme.bodySmall!.copyWith(
                       color: colorScheme.onBackground.withOpacity(0.5),
                     ),

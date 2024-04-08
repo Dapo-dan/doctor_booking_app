@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 class MainNavBar extends StatelessWidget {
@@ -21,11 +23,11 @@ class MainNavBar extends StatelessWidget {
         switch (index) {
           case 0:
             print(index);
-            //TODO: Navigate somewhere
+            //: Navigate somewhere
             break;
           case 1:
             print(index);
-            //TODO: Navigate somewhere
+            //: Navigate somewhere
             break;
           // ...other index
           default:
